@@ -21,17 +21,12 @@ export default async function RootLayout({ children }) {
 
   return (
     <html
-      // Not required, but good for SEO
       lang="pt-BR"
-      // Required to be set
       dir="ltr"
-      // Suggested by `next-themes` package https://github.com/pacocoursey/next-themes#with-app
       suppressHydrationWarning
     >
       <Head
-      // ... Your additional head options
       >
-        {/* Your additional tags should be passed as `children` of `<Head>` element */}
       </Head>
       <body>
         <Layout
@@ -41,8 +36,6 @@ export default async function RootLayout({ children }) {
           feedback={{ content: '' }}
           docsRepositoryBase="https://github.com/shuding/nextra/tree/main/docs"
           footer={footer}
-        // lastUpdated={<LastUpdated></LastUpdated>}
-        // ... Your additional layout options
         >
           {children}
         </Layout>
