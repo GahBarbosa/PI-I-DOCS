@@ -1,0 +1,13 @@
+# 2. Modelo Logico
+
+## O que é
+O modelo lógico é a evolução do modelo conceitual, trazendo um nível maior de detalhamento. Nele, as entidades são transformadas em tabelas, os relacionamentos são representados por chaves primárias e estrangeiras, e são definidos os tipos de dados e restrições (como unicidade e obrigatoriedade). Esse modelo ainda é independente do sistema de banco de dados que será utilizado, mas já oferece uma visão técnica mais próxima da implementação.
+
+## Diagrama
+![logico](/logico.png)
+
+## Funcionamento
+No modelo lógico deste projeto, as entidades Cliente, Pedido, Produto e Fornecedor são representadas por tabelas. 
+Os relacionamentos foram convertidos em chaves estrangeiras: cada Pedido possui um cliente_id que referencia a tabela de Clientes.
+A relação entre Pedido e Produto é representada por uma tabela intermediária, permitindo que um pedido tenha múltiplos produtos e que um mesmo produto esteja em vários pedidos. 
+Da mesma forma, a ligação entre Produto e Fornecedor também é feita por uma tabela relacional, possibilitando múltiplos fornecedores para um mesmo produto e vice-versa.

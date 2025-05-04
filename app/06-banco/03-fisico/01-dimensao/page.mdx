@@ -1,0 +1,114 @@
+# Tabela Dimensão
+
+As tabelas de dimensão armazenam entidades descritivas que dão contexto aos dados do sistema. Elas representam os elementos clientes, fornecedores, produtos e insumos.
+
+A seguir, detalhamos cada tabela de dimensão utilizada neste projeto.
+
+## Tabela: `dim_cliente`
+
+```sql
+CREATE TABLE dim_cliente (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf_cnpj VARCHAR(20) NOT NULL UNIQUE,
+    telefone VARCHAR(20),
+    email VARCHAR(100) NOT NULL UNIQUE,
+    endereco VARCHAR(200),
+    data_cadastro DATE DEFAULT CURRENT_DATE
+);
+```
+
+### Dicionario de dados
+| Campo           | Tipo     | Descrição                      | Obrigatoriedade | Restrições               |
+| --------------- | -------- | ------------------------------ | --------------- | ------------------------ |
+| `id`            | Numérico | Identificador único do cliente | Obrigatório     | Chave primária           |
+| `nome`          | Texto    | Nome completo do cliente       | Obrigatório     |                          |
+| `cpf_cnpj`      | Texto    | CPF ou CNPJ do cliente         | Obrigatório     | Único                    |
+| `telefone`      | Texto    | Número de telefone             | Opcional        |                          |
+| `email`         | Texto    | Endereço de e-mail             | Obrigatório     | Único                    |
+| `endereco`      | Texto    | Endereço completo              | Opcional        |                          |
+| `data_cadastro` | Data     | Data de cadastro no sistema    | Opcional        | Valor padrão: data atual |
+
+
+
+## Tabela `dim_fornecedor`
+
+```sql
+CREATE TABLE dim_fornecedor (
+    id SERIAL PRIMARY KEY,
+    nome_fantasia VARCHAR(100) NOT NULL,
+    razao_social VARCHAR(150),
+    cnpj VARCHAR(20) NOT NULL UNIQUE,
+    telefone VARCHAR(20),
+    email VARCHAR(100) NOT NULL UNIQUE,
+    endereco VARCHAR(200),
+    data_cadastro DATE DEFAULT CURRENT_DATE
+);
+```
+
+### Dicionario de dados
+| Campo           | Tipo     | Descrição                         | Obrigatoriedade | Restrições               |
+| --------------- | -------- | --------------------------------- | --------------- | ------------------------ |
+| `id`            | Numérico | Identificador único do fornecedor | Obrigatório     | Chave primária           |
+| `nome_fantasia` | Texto    | Nome fantasia da empresa          | Obrigatório     |                          |
+| `razao_social`  | Texto    | Razão social do fornecedor        | Opcional        |                          |
+| `cnpj`          | Texto    | CNPJ do fornecedor                | Obrigatório     | Único                    |
+| `telefone`      | Texto    | Número de telefone                | Opcional        |                          |
+| `email`         | Texto    | Endereço de e-mail                | Obrigatório     | Único                    |
+| `endereco`      | Texto    | Endereço completo                 | Opcional        |                          |
+| `data_cadastro` | Data     | Data de cadastro no sistema       | Opcional        | Valor padrão: data atual |
+
+
+## Tabela `dim_insumo`
+
+```sql
+CREATE TABLE dim_insumo (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao VARCHAR(200),
+    unidade_medida unidade_medida_enum DEFAULT 'Unidade',
+    preco_unitario NUMERIC(10, 2),
+    fornecedor_id INT,
+    CONSTRAINT fk_fornecedor
+        FOREIGN KEY (fornecedor_id)
+        REFERENCES dim_fornecedor(id)
+);
+```
+
+### Dicionario de dados
+| Campo            | Tipo     | Descrição                     | Obrigatoriedade | Restrições                           |
+| ---------------- | -------- | ----------------------------- | --------------- | ------------------------------------ |
+| `id`             | Numérico | Identificador único do insumo | Obrigatório     | Chave primária                       |
+| `nome`           | Texto    | Nome do insumo                | Obrigatório     |                                      |
+| `descricao`      | Texto    | Descrição do insumo           | Opcional        |                                      |
+| `unidade_medida` | Enum     | Unidade de medida             | Opcional        | Valor padrão: 'Unidade'              |
+| `preco_unitario` | Numérico | Preço por unidade             | Opcional        |                                      |
+| `fornecedor_id`  | Numérico | Referência ao fornecedor      | Opcional        | Chave estrangeira → `dim_fornecedor` |
+
+## Tabela `dim_produto`
+
+```sql
+CREATE TABLE dim_produto (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao VARCHAR(200),
+    preco_unitario NUMERIC(10, 2) CHECK (preco_unitario >= 0),
+    estoque INT DEFAULT 0,
+    unidade_medida unidade_medida_enum DEFAULT 'Unidade',
+    fornecedor_id INT,
+    CONSTRAINT fk_fornecedor
+        FOREIGN KEY (fornecedor_id)
+        REFERENCES dim_fornecedor(id)
+);
+```
+
+### Dicionario de dados
+| Campo            | Tipo     | Descrição                      | Obrigatoriedade | Restrições                           |
+| ---------------- | -------- | ------------------------------ | --------------- | ------------------------------------ |
+| `id`             | Numérico | Identificador único do produto | Obrigatório     | Chave primária                       |
+| `nome`           | Texto    | Nome do produto                | Obrigatório     |                                      |
+| `descricao`      | Texto    | Descrição do produto           | Opcional        |                                      |
+| `preco_unitario` | Numérico | Valor unitário                 | Opcional        | Deve ser ≥ 0                         |
+| `estoque`        | Numérico | Quantidade em estoque          | Opcional        | Valor padrão: 0                      |
+| `unidade_medida` | Enum     | Unidade de medida              | Opcional        | Valor padrão: 'Unidade'              |
+| `fornecedor_id`  | Numérico | Referência ao fornecedor       | Opcional        | Chave estrangeira → `dim_fornecedor` |

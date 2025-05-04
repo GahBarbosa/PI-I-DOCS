@@ -1,0 +1,50 @@
+# 4. Exemplos de Consultas SQL
+
+O objetivo é demonstrar como acessar e manipular as informações armazenadas, utilizando SQL de forma clara e eficiente.
+
+Cada exemplo acompanha uma explicação do que a consulta realiza e em quais situações ela pode ser útil, servindo tanto como guia de uso quanto como base para a construção de novas queries, conforme as necessidades.
+
+## Exemplo 1 - Listar todos os clientes
+> Essa consulta retorna os dados principais dos clientes ordenados pela data de cadastro, do mais recente ao mais antigo.
+
+```sql
+SELECT id, nome, cpf_cnpj, email, data_cadastro
+FROM dim_cliente
+ORDER BY data_cadastro DESC;
+```
+
+| ID | Nome          | CPF/CNPJ    | Telefone    | Email                                           | Endereço            | Data de Cadastro |
+| -- | ------------- | ----------- | ----------- | ----------------------------------------------- | ------------------- | ---------------- |
+| 1  | Ana Paula     | 12345678901 | 11999990001 | [ana@email.com](mailto:ana@email.com)           | Rua das Flores, 100 | 2025-04-29       |
+| 2  | Bruno Costa   | 23456789012 | 11999990002 | [bruno@email.com](mailto:bruno@email.com)       | Av Brasil, 200      | 2025-04-29       |
+| 3  | Carla Souza   | 34567890123 | 11999990003 | [carla@email.com](mailto:carla@email.com)       | Rua A, 300          | 2025-04-29       |
+| 4  | Diego Martins | 45678901234 | 11999990004 | [diego@email.com](mailto:diego@email.com)       | Rua B, 400          | 2025-04-29       |
+| 5  | Elaine Rocha  | 56789012345 | 11999990005 | [elaine@email.com](mailto:elaine@email.com)     | Rua C, 500          | 2025-04-29       |
+| 6  | Felipe Lima   | 67890123456 | 11999990006 | [felipe@email.com](mailto:felipe@email.com)     | Rua D, 600          | 2025-04-29       |
+| 7  | Gisele Dias   | 78901234567 | 11999990007 | [gisele@email.com](mailto:gisele@email.com)     | Rua E, 700          | 2025-04-29       |
+| 8  | Henrique Melo | 89012345678 | 11999990008 | [henrique@email.com](mailto:henrique@email.com) | Rua F, 800          | 2025-04-29       |
+| 9  | Isabela Alves | 90123456789 | 11999990009 | [isabela@email.com](mailto:isabela@email.com)   | Rua G, 900          | 2025-04-29       |
+| 10 | João Pedro    | 01234567890 | 11999990010 | [joao@email.com](mailto:joao@email.com)         | Rua H, 1000         | 2025-04-29       |
+
+
+## Exemplo 2 - Buscar produtos com estoque
+> Exibe os produtos que possuem unidades em estoque, permitindo visualizar quais itens estão disponíveis para venda.
+
+```sql
+SELECT id, nome, estoque, preco_unitario
+FROM dim_produto
+WHERE estoque > 0
+ORDER BY nome;
+```
+| ID | Nome do Produto   | Descrição                      | Preço Unitário | Estoque | Unidade de Medida | Fornecedor ID |
+| -- | ----------------- | ------------------------------ | -------------- | ------- | ----------------- | ------------- |
+| 4  | Blusa Manga Longa | Blusa feminina com manga longa | 45.00          | 40      | Unidade           | 4             |
+| 3  | Calça Jeans       | Calça jeans azul               | 60.00          | 50      | Unidade           | 3             |
+| 9  | Camisa Social     | Camisa social masculina        | 65.00          | 15      | Unidade           | 9             |
+| 1  | Camiseta Básica   | Camiseta de algodão branca     | 25.00          | 100     | Unidade           | 1             |
+| 2  | Camiseta Preta    | Camiseta de algodão preta      | 27.00          | 80      | Unidade           | 2             |
+| 10 | Jaqueta Jeans     | Jaqueta jeans reforçada        | 120.00         | 10      | Unidade           | 10            |
+| 8  | Moletom Cinza     | Moletom com capuz              | 90.00          | 20      | Unidade           | 8             |
+| 7  | Saia Midi         | Saia midi estampada            | 55.00          | 25      | Unidade           | 7             |
+| 6  | Short Jeans       | Short jeans verão              | 35.00          | 60      | Unidade           | 6             |
+| 5  | Vestido Floral    | Vestido estampado floral       | 70.00          | 30      | Unidade           | 5             |

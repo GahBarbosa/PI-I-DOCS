@@ -1,0 +1,64 @@
+# Tabela Mapeamento
+As tabelas de mapeamento representam relacionamentos muitos-para-muitos entre entidades, armazenando também informações adicionais que enriquecem essas conexões. Elas são importantes para garantir a integridade dos vínculos e capturar detalhes específicos de cada relação.
+
+## Tabela `map_produto_composicao`
+Representa a composição de um produto a partir de diversos insumos
+
+```sql
+CREATE TABLE map_produto_composicao (
+    id SERIAL PRIMARY KEY,
+    produto_id INT NOT NULL,
+    insumo_id INT NOT NULL,
+    quantidade NUMERIC(10, 2) CHECK (quantidade > 0),
+    preco_unitario NUMERIC(10,2),
+    CONSTRAINT fk_produto
+        FOREIGN KEY (produto_id)
+        REFERENCES dim_produto(id),
+    CONSTRAINT fk_insumo
+        FOREIGN KEY (insumo_id)
+        REFERENCES dim_insumo(id),
+    CONSTRAINT unico_produto_insumo
+        UNIQUE (produto_id, insumo_id)
+);
+```
+
+### Dicionario de dados
+| Campo            | Tipo     | Descrição                                 | Obrigatoriedade | Restrições                        |
+| ---------------- | -------- | ----------------------------------------- | --------------- | --------------------------------- |
+| `id`             | Numérico | Identificador único da composição         | Obrigatório     | Chave primária                    |
+| `produto_id`     | Numérico | Referência ao produto composto            | Obrigatório     | Chave estrangeira → `dim_produto` |
+| `insumo_id`      | Numérico | Referência ao insumo usado na composição  | Obrigatório     | Chave estrangeira → `dim_insumo`  |
+| `quantidade`     | Numérico | Quantidade do insumo utilizada no produto | Opcional        | Deve ser maior que 0              |
+| `preco_unitario` | Numérico | Preço unitário do insumo na composição    | Opcional        | —                                 |
+| **Restrição**    | —        | Cada par produto-insumo deve ser único    | —               | `UNIQUE(produto_id, insumo_id)`   |
+
+## Tabela `map_pedido_detalhe`
+Representa os produtos incluídos em um pedido e seus detalhes individuais.
+
+```sql
+CREATE TABLE map_pedido_detalhe (
+    id SERIAL PRIMARY KEY,
+    pedido_id INT NOT NULL,
+    produto_id INT NOT NULL,
+    quantidade INT CHECK (quantidade > 0),
+    preco_unitario NUMERIC(10,2) CHECK (preco_unitario >= 0),
+    CONSTRAINT fk_pedido
+        FOREIGN KEY (pedido_id)
+        REFERENCES fct_pedido(id),
+    CONSTRAINT fk_produto
+        FOREIGN KEY (produto_id)
+        REFERENCES dim_produto(id),
+    CONSTRAINT unico_pedido_produto
+        UNIQUE (pedido_id, produto_id)
+);
+```
+
+### Dicionario de dados
+| Campo            | Tipo     | Descrição                                | Obrigatoriedade | Restrições                        |
+| ---------------- | -------- | ---------------------------------------- | --------------- | --------------------------------- |
+| `id`             | Numérico | Identificador único do detalhe de pedido | Obrigatório     | Chave primária                    |
+| `pedido_id`      | Numérico | Referência ao pedido                     | Obrigatório     | Chave estrangeira → `fct_pedido`  |
+| `produto_id`     | Numérico | Referência ao produto incluso no pedido  | Obrigatório     | Chave estrangeira → `dim_produto` |
+| `quantidade`     | Numérico | Quantidade do produto no pedido          | Opcional        | Deve ser maior que 0              |
+| `preco_unitario` | Numérico | Preço do produto no momento do pedido    | Opcional        | Deve ser maior ou igual a 0       |
+| **Restrição**    | —        | Cada par pedido-produto deve ser único   | —               | `UNIQUE(pedido_id, produto_id)`   |

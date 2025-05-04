@@ -10,4 +10,7 @@ export default withNextra({
   //   locales: ['en', 'pt-BR'],
   //   defaultLocale: 'pt-BR'
   // }
+  images: {
+    domains: ['avatars.githubusercontent.com'],
+  },
 })

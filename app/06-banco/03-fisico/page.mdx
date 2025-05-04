@@ -1,0 +1,12 @@
+# Modelo físico
+
+O modelo físico é a representação mais detalhada do banco de dados, pronto para ser implementado no sistema gerenciador de banco de dados (SGBD). Nele, são definidos os nomes das tabelas e colunas, os tipos de dados específicos de cada campo, os índices e constraints. Cada uma dessas categorias é acompanhada de um dicionário de dados específico, que descreve os campos, tipos, regras e relacionamentos implementados. É a etapa final da modelagem, onde todas as decisões anteriores são traduzidas em uma estrutura concreta.
+
+## Nomenclatura
+Adotamos uma nomenclatura padronizada para facilitar a identificação do papel de cada tabela no contexto do banco de dados. As tabelas que armazenam informações descritivas e relativamente estáticas 
+
+- tabelas dimensão são nomeadas com o prefixo `dim_`. 
+- tabelas fato utilizam o prefixo `fct_`.
+- para os relacionamentos muitos-para-muitos entre entidades, utilizamos o prefixo `map_`, indicando tabelas de mapeamento. 
+
+Essa convenção de nomenclatura torna mais clara a estrutura lógica e facilita tanto o entendimento quanto a manutenção do banco de dados.

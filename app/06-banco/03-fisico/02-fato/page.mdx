@@ -1,0 +1,29 @@
+# Tabela Fato
+
+As tabelas fato armazenam os eventos principais do sistema, que representam ações ou transações. No nosso caso, a principal tabela de fato é a que registra os pedidos realizados pelos clientes.
+
+## Tabela `fct_pedido`
+
+```sql
+CREATE TABLE fct_pedido (
+    id SERIAL PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    data_pedido DATE DEFAULT CURRENT_DATE,
+    data_entrega DATE,
+    status pedido_status_enum,  
+    valor_total NUMERIC(12, 2) CHECK (valor_total >= 0),
+    CONSTRAINT fk_cliente
+        FOREIGN KEY (cliente_id)
+        REFERENCES dim_cliente(id)
+);
+```
+
+### Dicionario de dados
+| Campo          | Tipo     | Descrição                              | Obrigatoriedade | Restrições                                |
+| -------------- | -------- | -------------------------------------- | --------------- | ----------------------------------------- |
+| `id`           | Numérico | Identificador único do pedido          | Obrigatório     | Chave primária                            |
+| `cliente_id`   | Numérico | Referência ao cliente que fez o pedido | Obrigatório     | Chave estrangeira → `dim_cliente`         |
+| `data_pedido`  | Data     | Data em que o pedido foi realizado     | Opcional        | Valor padrão: data atual                  |
+| `data_entrega` | Data     | Data prevista ou realizada da entrega  | Opcional        |                                           |
+| `status`       | Enum     | Situação atual do pedido               | Opcional        | Valores definidos no enum `pedido_status` |
+| `valor_total`  | Numérico | Valor total do pedido                  | Opcional        | Deve ser maior ou igual a 0               |

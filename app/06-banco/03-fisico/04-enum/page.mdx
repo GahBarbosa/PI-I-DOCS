@@ -1,0 +1,25 @@
+# Enum
+Os tipos ENUM (enumerações) são usados para restringir o conteúdo de uma coluna a um conjunto fixo de valores predefinidos, garantindo padronização, integridade e validação automática dos dados no momento da inserção.
+
+## Tipo: `pedido_status_enum`
+Define os estágios possíveis do fluxo de produção de um pedido.
+
+| Valor       | Descrição                                           |
+| ----------- | --------------------------------------------------- |
+| `Corte`     | Pedido está na etapa de corte de material           |
+| `Costura`   | Pedido em processo de costura                       |
+| `Revisão`   | Produto sendo revisado para controle de qualidade   |
+| `Etiqueta`  | Produto em fase de etiquetagem ou identificação     |
+| `Embalagem` | Produto em fase final de empacotamento para entrega |
+
+## Tipo: `unidade_medida_enum`
+Define as unidades de medida possíveis para produtos e insumos.
+
+| Valor        | Descrição                       |
+| ------------ | ------------------------------- |
+| `Unidade`    | Medido em unidades inteiras     |
+| `Duzia`      | Medido por grupo de 12 unidades |
+| `Pacote`     | Medido por embalagem agrupada   |
+| `Kilo`       | Medido em quilogramas           |
+| `Litro`      | Medido em litros                |
+| `Centimetro` | Medido em centímetros           |
